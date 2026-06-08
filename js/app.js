@@ -26,22 +26,24 @@ const buscarMaxYMin = (arrayNumeros) => {
 
 btnMaxMin.addEventListener("click", () => {
     const valorInput = inputMaxMin.value;
-
+    let textoResultado = ""; 
+    
     if (valorInput.trim() === "") {
-        resultadoMaxMin.textContent = "Por favor, ingrese números.";
-        return;
+        textoResultado = "Por favor, ingrese números.";
+    } else {
+        const arrayOriginal = valorInput.split(/[\s,]+/).filter(Boolean).map(Number);
+
+        if (arrayOriginal.some(isNaN)) {
+            textoResultado = "Error: utilice solo números (separados por espacio o coma).";
+        } else {
+            const arrayResultado = buscarMaxYMin(arrayOriginal);
+            textoResultado = `[${arrayResultado[0]}, ${arrayResultado[1]}]`;
+        }
     }
 
-    const arrayOriginal = valorInput.split(/[\s,]+/).filter(Boolean).map(Number);
-
-    if (arrayOriginal.some(isNaN)) {
-        resultadoMaxMin.textContent = "Error: utilice solo números (separados por espacio o coma).";
-        return;
-    }
-
-    const arrayResultado = buscarMaxYMin(arrayOriginal);
-    resultadoMaxMin.textContent = `[${arrayResultado[0]}, ${arrayResultado[1]}]`;
+    resultadoMaxMin.textContent = textoResultado;
 
     inputMaxMin.value = "";
     inputMaxMin.focus();
 });
+
